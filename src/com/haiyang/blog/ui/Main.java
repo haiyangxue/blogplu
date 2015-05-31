@@ -4,8 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-
-
 import org.apache.http.Header;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.protocol.ClientContext;
@@ -32,8 +30,11 @@ import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.View.OnClickListener;
 
+import com.haiyang.blog.AppConfig;
+import com.haiyang.blog.AppContext;
 import com.haiyang.blog.R;
 import com.haiyang.blog.api.ApiHttpClient;
+import com.haiyang.blog.api.remote.BlogPluApi;
 import com.haiyang.blog.fragment.ChatFragment;
 import com.haiyang.blog.fragment.ContactsFragment;
 import com.haiyang.blog.fragment.FoundFragment;
@@ -71,7 +72,7 @@ public class Main extends ActionBarActivity implements
 	 * 登录时的阴影覆盖
 	 */
 	private View view_mask;
-	
+
 	/**
 	 * PagerSlidingTabStrip的实例
 	 */
@@ -106,10 +107,10 @@ public class Main extends ActionBarActivity implements
 		pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
 		tabs.setViewPager(pager);
 		setTabsValue();
-		
-		view_mask = (View)findViewById(R.id.view_mask);
-		mLoginView = (LoginView)findViewById(R.id.mLoginView);
-		
+
+		view_mask = (View) findViewById(R.id.view_mask);
+		mLoginView = (LoginView) findViewById(R.id.mLoginView);
+
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.navigation_drawer);
 		mTitle = getTitle();
@@ -260,39 +261,38 @@ public class Main extends ActionBarActivity implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
-		
-		//设置遮罩阴影层点击消失该界面
-    	view_mask.setOnClickListener(new OnClickListener() {
-			
+
+		// 设置遮罩阴影层点击消失该界面
+		view_mask.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if(mLoginView.isShow()){
+				if (mLoginView.isShow()) {
 					mLoginView.dismiss();
 				}
 			}
 		});
-    	//设置登录界面状态监听
-    	mLoginView.setOnStatusListener(new onStatusListener() {
-			
+		// 设置登录界面状态监听
+		mLoginView.setOnStatusListener(new onStatusListener() {
+
 			@Override
 			public void onShow() {
-				//显示
+				// 显示
 				view_mask.setVisibility(View.VISIBLE);
 			}
-			
+
 			@Override
 			public void onDismiss() {
-				//隐藏
+				// 隐藏
 				view_mask.setVisibility(View.GONE);
 			}
 		});
-    	
-    	
+
 		if (id == R.id.action_plus) {
-			if(mLoginView.isShow()){
+			if (mLoginView.isShow()) {
 				mLoginView.dismiss();
-			}else{
+			} else {
 				mLoginView.show();
 			}
 			TLog.log("item", "plus");
@@ -321,21 +321,21 @@ public class Main extends ActionBarActivity implements
 
 		public ContentFragment() {
 		}
-//		//设置登录界面状态监听
-//    	mLoginView.setOnStatusListener(new onStatusListener() {
-//			
-//			@Override
-//			public void onShow() {
-//				//显示
-//				view_mask.setVisibility(View.VISIBLE);
-//			}
-//			
-//			@Override
-//			public void onDismiss() {
-//				//隐藏
-//				view_mask.setVisibility(View.GONE);
-//			}
-//		});
+		// //设置登录界面状态监听
+		// mLoginView.setOnStatusListener(new onStatusListener() {
+		//
+		// @Override
+		// public void onShow() {
+		// //显示
+		// view_mask.setVisibility(View.VISIBLE);
+		// }
+		//
+		// @Override
+		// public void onDismiss() {
+		// //隐藏
+		// view_mask.setVisibility(View.GONE);
+		// }
+		// });
 		// @Override
 		// public View onCreateView(LayoutInflater inflater, ViewGroup
 		// container,
@@ -348,6 +348,6 @@ public class Main extends ActionBarActivity implements
 		// return rootView;
 		// }
 	}
-	
+
 	
 }

@@ -39,7 +39,6 @@ import android.widget.Toast;
  * blog : http://blog.csdn.net/vipzjyno1/
  */
 public class LoginView extends RelativeLayout 
-//implements View.OnClickListener
 								{
 	/** Scroller 拖动类 */
 	private Scroller mScroller;
@@ -92,17 +91,8 @@ public class LoginView extends RelativeLayout
 	private void init(Context context) {
 		setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
 		setFocusable(true);
-		etUsername=(EditText)findViewById(R.id.et_username);
-		etPassword=(EditText)findViewById(R.id.et_password);
-		btnLogin=(Button)findViewById(R.id.btn_login);
-		btnLogin.setOnClickListener(new OnClickListener() {
+	
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				TLog.log(TAG, "click");
-				handleLogin();}
-		});
 		mScroller = new Scroller(context);
 		mScreenHeigh = TDevice.getWindowHeigh(context);
 		mScreenWidth = TDevice.getWindowWidth(context);
@@ -128,9 +118,22 @@ public class LoginView extends RelativeLayout
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				
 				dismiss();
 			}
 		});
+		etUsername=(EditText)findViewById(R.id.et_username);
+		etPassword=(EditText)findViewById(R.id.et_password);
+		btnLogin=(Button)findViewById(R.id.btn_login);
+		btnLogin.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				handleLogin();
+			}
+		});
+	
 	}
 
 	@Override
@@ -333,6 +336,7 @@ public class LoginView extends RelativeLayout
     	 @Override
          public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
     		 TLog.log(TAG,"yes");
+    		 dismiss();
              try {
                  AsyncHttpClient client = ApiHttpClient.getHttpClient();
                  HttpContext httpContext = client.getHttpContext();
@@ -388,10 +392,10 @@ public class LoginView extends RelativeLayout
     private void handleLoginSuccess() { }
 
     private boolean prepareForLogin() {
-        if (!TDevice.hasInternet()) {
-//            AppContext.showToastShort(R.string.tip_no_internet);
-            return false;
-        }
+//        if (!TDevice.hasInternet()) {
+////            AppContext.showToastShort(R.string.tip_no_internet);
+//            return false;
+//        }
         String uName = etUsername.getText().toString();
         if (StringUtils.isEmpty(uName)) {
 //            AppContext.showToastShort(R.string.tip_please_input_username);

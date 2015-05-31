@@ -1,15 +1,11 @@
 package com.haiyang.blog.api;
 
 import java.util.Locale;
-
-
-
 import org.apache.http.client.params.ClientPNames;
-
 import android.content.Context;
 import android.util.Log;
-
 import com.haiyang.blog.AppContext;
+import com.haiyang.blog.api.remote.Urls;
 import com.haiyang.blog.util.TLog;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -17,8 +13,6 @@ import com.loopj.android.http.RequestParams;
 
 public class ApiHttpClient {
 
-    public final static String HOST = "www.oschina.net";
-    private static String API_URL = "http://www.oschina.net/%s";
     // public final static String HOST = "192.168.1.46";
     // private static String API_URL = "http://192.168.1.46/%s";
     public static final String DELETE = "DELETE";
@@ -27,7 +21,9 @@ public class ApiHttpClient {
     public static final String PUT = "PUT";
     public static AsyncHttpClient client;
 
-    public ApiHttpClient() {}
+    public ApiHttpClient() {
+    	client=new AsyncHttpClient();
+    }
 
     public static AsyncHttpClient getHttpClient() {
         return client;
@@ -42,31 +38,22 @@ public class ApiHttpClient {
     }
 
     public static void delete(String partUrl, AsyncHttpResponseHandler handler) {
-        client.delete(getAbsoluteApiUrl(partUrl), handler);
+        client.delete(partUrl, handler);
         log(new StringBuilder("DELETE ").append(partUrl).toString());
     }
 
     public static void get(String partUrl, AsyncHttpResponseHandler handler) {
-        client.get(getAbsoluteApiUrl(partUrl), handler);
+        client.get(partUrl, handler);
         log(new StringBuilder("GET ").append(partUrl).toString());
     }
 
     public static void get(String partUrl, RequestParams params,
             AsyncHttpResponseHandler handler) {
-        client.get(getAbsoluteApiUrl(partUrl), params, handler);
+        client.get(partUrl, params, handler);
         log(new StringBuilder("GET ").append(partUrl).append("&")
                 .append(params).toString());
     }
 
-    public static String getAbsoluteApiUrl(String partUrl) {
-        String url = String.format(API_URL, partUrl);
-        Log.d("BASE_CLIENT", "request:" + url);
-        return url;
-    }
-
-    public static String getApiUrl() {
-        return API_URL;
-    }
 
     public static void getDirect(String url, AsyncHttpResponseHandler handler) {
         client.get(url, handler);
@@ -79,13 +66,14 @@ public class ApiHttpClient {
     }
 
     public static void post(String partUrl, AsyncHttpResponseHandler handler) {
-        client.post(getAbsoluteApiUrl(partUrl), handler);
+        client.post(partUrl, handler);
         log(new StringBuilder("POST ").append(partUrl).toString());
     }
 
     public static void post(String partUrl, RequestParams params,
             AsyncHttpResponseHandler handler) {
-        client.post(getAbsoluteApiUrl(partUrl), params, handler);
+    	client=new AsyncHttpClient();
+        client.post(partUrl, params, handler);
         log(new StringBuilder("POST ").append(partUrl).append("&")
                 .append(params).toString());
     }
@@ -98,25 +86,22 @@ public class ApiHttpClient {
     }
 
     public static void put(String partUrl, AsyncHttpResponseHandler handler) {
-        client.put(getAbsoluteApiUrl(partUrl), handler);
+        client.put(partUrl, handler);
         log(new StringBuilder("PUT ").append(partUrl).toString());
     }
 
     public static void put(String partUrl, RequestParams params,
             AsyncHttpResponseHandler handler) {
-        client.put(getAbsoluteApiUrl(partUrl), params, handler);
+        client.put(partUrl, params, handler);
         log(new StringBuilder("PUT ").append(partUrl).append("&")
                 .append(params).toString());
     }
 
-    public static void setApiUrl(String apiUrl) {
-        API_URL = apiUrl;
-    }
-
+  
     public static void setHttpClient(AsyncHttpClient c) {
         client = c;
         client.addHeader("Accept-Language", Locale.getDefault().toString());
-        client.addHeader("Host", HOST);
+        client.addHeader("Host", Urls.HOST);
         client.addHeader("Connection", "Keep-Alive");
         client.getHttpClient().getParams()
                 .setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);

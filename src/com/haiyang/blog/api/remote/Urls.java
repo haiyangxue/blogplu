@@ -2,8 +2,8 @@ package com.haiyang.blog.api.remote;
 
 
 public class Urls {
-	public final static String HOST = "121.250.220.182";//211.87.232.8 121.250.220.182
-	public static final String BASIC_URL = "http://121.250.220.182:8080/First/action/json/";
+	public final static String HOST = "211.87.237.157";//211.87.232.8 121.250.220.182
+	public static final String BASIC_URL = "http://211.87.237.157:8080/First/action/json/";
 	/**
 	 * 版本更新地址
 	 */
